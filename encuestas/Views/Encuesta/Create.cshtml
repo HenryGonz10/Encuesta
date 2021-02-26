@@ -1,0 +1,143 @@
+﻿@model encuestas.Models.Dinamico.entrevista
+
+@{
+    ViewBag.Title = "Crear Encuesta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Encuesta", FormMethod.Post))
+{
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <h2 class="text-center">@ViewBag.Title</h2>
+            <div class="form-group">
+                @Html.LabelFor(d => d.titulo)
+                @Html.TextBoxFor(d => d.titulo, "", new { placeholder = "Título de la Encuesta", @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(d => d.titulo, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(d => d.desc)
+                @Html.TextAreaFor(d => d.desc, new { placeholder = "Ingrese una breve descripción", @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.desc, "", new { @class = "text-danger" })
+            </div>
+            <a data-toggle="collapse" href="#add" role="button" aria-expanded="false" aria-controls="add" class="btn btn-danger">Pregunta</a>
+            
+            <div class="collapse card card-body" id="add">
+                <div class="form-group">
+                    Nombre
+                    <input type="text" id="nombre" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    Titulo
+                    <input type="text" id="rotulo" class="form-control"/>
+                </div>
+                
+                <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="requerido">
+                    <label class="form-check-label" for="requerido">
+                        Requerido
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    Tipo
+                    <input type="text" id="tipo" class="form-control"/>
+                </div>
+                <div>
+                    <a class="btn btn-success float-right" onclick="AgregaConcepto();"><i class="fas fa-plus"></i>&nbsp;Agregar</a>
+                </div>
+            </div>
+
+            <div class="my-5">
+                <div class="card card-body" id="divConceptos">
+                    <table id="detalle_" class="table table-responsive-lg">
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Requerido</th>
+                            <th scope="col">tipo</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input value="Guardar" type="submit" class="btn btn-success float-right"/>
+        </div>
+    </div>
+}
+
+<script>
+    var num = 0;
+    function AgregaConcepto() {
+        let nombre = document.getElementById("nombre").value;
+        let rotulo = document.getElementById("rotulo").value;
+        let requerido = document.getElementById("requerido").checked;
+        let tipo = document.getElementById("tipo").value;
+
+        //agregamos tabla
+        let Tabla = document.getElementById("detalle_");
+        let TR = document.createElement("tr");
+        let TDno = document.createElement("td");
+        let TDnombre = document.createElement("td");
+        let TDtitulo = document.createElement("td");
+        let TDrequerido = document.createElement("td");
+        let TDtipo = document.createElement("td");
+        let TDbtn = document.createElement("td");
+        TR.appendChild(TDno);
+        TR.appendChild(TDnombre);
+        TR.appendChild(TDtitulo);
+        TR.appendChild(TDrequerido);
+        TR.appendChild(TDtipo);
+        TR.appendChild(TDbtn);
+        TDno.innerHTML = String(num+1);
+        TDnombre.innerHTML = nombre;
+        TDtitulo.innerHTML = rotulo;
+        TDrequerido.innerHTML = requerido;
+        TDtipo.innerHTML = tipo;
+        TDbtn.innerHTML = "<a class='" + "btn btn-danger" + "'onclick='" + "elimina("+ num +");" + "'><i class='" + "fas fa-trash" +"'></i>&nbsp;Eliminar</a>";
+        Tabla.appendChild(TR);
+
+        //agregamos hiddens
+        let DivConceptos = document.getElementById("divConceptos");
+        let HiddenIndex = document.createElement("input");
+        let Hiddennombre = document.createElement("input");
+        let Hiddentitulo = document.createElement("input");
+        let Hiddenrequerido = document.createElement("input");
+        let Hiddentipo = document.createElement("input");
+        HiddenIndex.name = "detalles.Index";
+        HiddenIndex.value = num;
+        HiddenIndex.type = "hidden";
+        Hiddennombre.name = "detalles[" + num + "].nombre";
+        Hiddennombre.value = nombre;
+        Hiddennombre.type = "hidden";
+        Hiddentitulo.name = "detalles[" + num + "].titulo";
+        Hiddentitulo.value = rotulo;
+        Hiddentitulo.type = "hidden";
+        Hiddenrequerido.name = "detalles[" + num + "].requerido";
+        Hiddenrequerido.value = requerido;
+        Hiddenrequerido.type = "hidden";
+        Hiddentipo.name = "detalles[" + num + "].tipo";
+        Hiddentipo.value = tipo;
+        Hiddentipo.type = "hidden";
+        DivConceptos.appendChild(HiddenIndex);
+        DivConceptos.appendChild(Hiddennombre);
+        DivConceptos.appendChild(Hiddentitulo);
+        DivConceptos.appendChild(Hiddenrequerido);
+        DivConceptos.appendChild(Hiddentipo);
+
+        document.getElementById("nombre").value = "";
+        document.getElementById("rotulo").value = "";
+        document.getElementById("requerido").checked = false;
+        document.getElementById("tipo").value = "";
+
+        num++;
+    }
+
+    function elimina(id)
+    {
+        
+    }
+</script>

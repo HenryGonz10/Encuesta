@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="encuestaModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="detalle_encuesta">
+    <Key>
+      <PropertyRef Name="iddetalle_encuesta" />
+    </Key>
+    <Property Name="iddetalle_encuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idencuesta" Type="int" />
+    <Property Name="Nombre" Type="varchar" MaxLength="45" />
+    <Property Name="Titulo" Type="varchar" MaxLength="45" />
+    <Property Name="Requerido" Type="bit" />
+    <Property Name="Tipo" Type="int" />
+  </EntityType>
+  <EntityType Name="encuesta">
+    <Key>
+      <PropertyRef Name="idencuesta" />
+    </Key>
+    <Property Name="idencuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Titulo" Type="varchar" MaxLength="45" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="500" />
+    <Property Name="Fecha" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+    <Property Name="Estado" Type="bit" />
+    <Property Name="idusuario" Type="int" />
+  </EntityType>
+  <EntityType Name="resultado">
+    <Key>
+      <PropertyRef Name="idresultado" />
+    </Key>
+    <Property Name="idresultado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="iddetalle_encuesta" Type="int" />
+    <Property Name="resultado" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="tipo">
+    <Key>
+      <PropertyRef Name="idTipo" />
+    </Key>
+    <Property Name="idTipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tipo" Type="varchar" MaxLength="45" />
+    <Property Name="Estado" Type="bit" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="idUser" />
+    </Key>
+    <Property Name="idUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="User" Type="varchar" MaxLength="50" />
+    <Property Name="Pass" Type="varchar" MaxLength="500" />
+    <Property Name="Estado" Type="bit" />
+  </EntityType>
+  <Association Name="fk_detalle_encuesta_encuesta">
+    <End Role="encuesta" Type="Self.encuesta" Multiplicity="0..1" />
+    <End Role="detalle_encuesta" Type="Self.detalle_encuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="encuesta">
+        <PropertyRef Name="idencuesta" />
+      </Principal>
+      <Dependent Role="detalle_encuesta">
+        <PropertyRef Name="idencuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_detalle_encuesta_tipo">
+    <End Role="tipo" Type="Self.tipo" Multiplicity="0..1" />
+    <End Role="detalle_encuesta" Type="Self.detalle_encuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo">
+        <PropertyRef Name="idTipo" />
+      </Principal>
+      <Dependent Role="detalle_encuesta">
+        <PropertyRef Name="Tipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_encuesta_usuario">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+    <End Role="encuesta" Type="Self.encuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="encuesta">
+        <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_resultado_detalle">
+    <End Role="detalle_encuesta" Type="Self.detalle_encuesta" Multiplicity="0..1" />
+    <End Role="resultado" Type="Self.resultado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="detalle_encuesta">
+        <PropertyRef Name="iddetalle_encuesta" />
+      </Principal>
+      <Dependent Role="resultado">
+        <PropertyRef Name="iddetalle_encuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="encuestaModelStoreContainer">
+    <EntitySet Name="detalle_encuesta" EntityType="Self.detalle_encuesta" Schema="encuesta" store:Type="Tables" />
+    <EntitySet Name="encuesta" EntityType="Self.encuesta" Schema="encuesta" store:Type="Tables" />
+    <EntitySet Name="resultado" EntityType="Self.resultado" Schema="encuesta" store:Type="Tables" />
+    <EntitySet Name="tipo" EntityType="Self.tipo" Schema="encuesta" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="encuesta" store:Type="Tables" />
+    <AssociationSet Name="fk_detalle_encuesta_encuesta" Association="Self.fk_detalle_encuesta_encuesta">
+      <End Role="encuesta" EntitySet="encuesta" />
+      <End Role="detalle_encuesta" EntitySet="detalle_encuesta" />
+    </AssociationSet>
+    <AssociationSet Name="fk_detalle_encuesta_tipo" Association="Self.fk_detalle_encuesta_tipo">
+      <End Role="tipo" EntitySet="tipo" />
+      <End Role="detalle_encuesta" EntitySet="detalle_encuesta" />
+    </AssociationSet>
+    <AssociationSet Name="fk_encuesta_usuario" Association="Self.fk_encuesta_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="encuesta" EntitySet="encuesta" />
+    </AssociationSet>
+    <AssociationSet Name="fk_resultado_detalle" Association="Self.fk_resultado_detalle">
+      <End Role="detalle_encuesta" EntitySet="detalle_encuesta" />
+      <End Role="resultado" EntitySet="resultado" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,44 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow-lg">
+    <div class="card-header bg-white">
+        <div class="float-left">
+            Mis Encuestas
+        </div>
+        <div class="float-right">
+            <a href="@Url.Action("Create", "Encuesta")" class="btn btn-primary"><i class="fas fa-plus"></i> Crear</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table data-order='[[ 0, "asc" ]]' data-page-length='10' id="table" class="table table-responsive-sm table-responsive-md  table-responsive-lg align-items-center table-flush" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var oElement in Model.data)
+                {
+                    <tr>
+                        <td>@oElement.titulo</td>
+                        <td>@oElement.desc</td>
+                        <td>@oElement.fecha</td>
+                        <td><a href="#"><center><i class="fas fa-chart-line" style="color:forestgreen" /></center></a></td>
+                        <td><a href="@Url.Action("Edit","Encuesta", new { id = oElement.id })"><center><i class="fas fa-edit" style="color:goldenrod" /></center></a></td>
+                        <td><a href="@Url.Action("Delete","Encuesta", new { id = oElement.id })"><center><i class="fas fa-trash" style="color:red" /></center></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="encuestaModelStoreContainer" CdmEntityContainer="encuestaEntities">
+    <EntitySetMapping Name="detalle_encuesta">
+      <EntityTypeMapping TypeName="encuestaModel.detalle_encuesta">
+        <MappingFragment StoreEntitySet="detalle_encuesta">
+          <ScalarProperty Name="iddetalle_encuesta" ColumnName="iddetalle_encuesta" />
+          <ScalarProperty Name="idencuesta" ColumnName="idencuesta" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+          <ScalarProperty Name="Requerido" ColumnName="Requerido" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="encuesta">
+      <EntityTypeMapping TypeName="encuestaModel.encuesta">
+        <MappingFragment StoreEntitySet="encuesta">
+          <ScalarProperty Name="idencuesta" ColumnName="idencuesta" />
+          <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="resultado">
+      <EntityTypeMapping TypeName="encuestaModel.resultado">
+        <MappingFragment StoreEntitySet="resultado">
+          <ScalarProperty Name="idresultado" ColumnName="idresultado" />
+          <ScalarProperty Name="iddetalle_encuesta" ColumnName="iddetalle_encuesta" />
+          <ScalarProperty Name="resultado1" ColumnName="resultado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tipo">
+      <EntityTypeMapping TypeName="encuestaModel.tipo">
+        <MappingFragment StoreEntitySet="tipo">
+          <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+          <ScalarProperty Name="Tipo1" ColumnName="Tipo" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="encuestaModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="idUser" ColumnName="idUser" />
+          <ScalarProperty Name="User" ColumnName="User" />
+          <ScalarProperty Name="Pass" ColumnName="Pass" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
