@@ -54,6 +54,21 @@
         $(document).ready(function () {
             $('#table').DataTable();
         });
+
+        $(document).on('click', '.borrar', function (event) {
+            var no = $(this).parents("tr").find("td").eq(0).html();
+
+            event.preventDefault();
+            $(this).closest('tr').remove();
+
+            if (no == null)
+                return;
+
+            $.get("/Encuesta/deleteDetalle", { id: no }, function (data) {
+                if (data == true) {     
+                }
+            });
+        });
     </script>
     @RenderSection("scripts", required: false)
 </body>

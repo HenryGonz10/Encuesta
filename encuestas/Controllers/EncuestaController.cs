@@ -82,6 +82,17 @@ namespace encuestas.Controllers
                     obj.titulo = aux.Titulo;
                     obj.desc = aux.Descripcion;
                     obj.fecha = aux.Fecha;
+                    var det = (from d in db.detalle_encuesta
+                               where d.idencuesta == obj.id
+                               select new Models.Dinamico.detalle
+                               {
+                                   id = d.iddetalle_encuesta,
+                                   nombre = d.Nombre,
+                                   titulo = d.Titulo,
+                                   requerido = (bool)d.Requerido,
+                                   tipo = (int)d.Tipo
+                               }).ToList();
+                    obj.detalles = det;
                     return View(obj);
                 }
             }
@@ -168,6 +179,80 @@ namespace encuestas.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        public JsonResult Gettipo()
+        {
+            Models.encuestaEntities db = new Models.encuestaEntities();
+            db.Configuration.ProxyCreationEnabled = false;
+            var tipos = db.tipo.Where(x=>x.Estado==true).ToList();
+            return Json(tipos, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult deleteDetalle(int id)
+        {
+            try
+            {
+                using (Models.encuestaEntities db = new Models.encuestaEntities())
+                {
+                    var obj = db.detalle_encuesta.Find(id);
+                    db.Entry(obj).State = System.Data.Entity.EntityState.Deleted;
+                    db.SaveChanges();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult addDetalle(Models.Dinamico.detalle obj, int id)
+        {
+            try
+            {
+                using (Models.encuestaEntities db = new Models.encuestaEntities())
+                {
+                    var aux = new Models.detalle_encuesta();
+                    aux.idencuesta = id;
+                    aux.Nombre = obj.nombre;
+                    aux.Titulo = obj.titulo;
+                    aux.Requerido = obj.requerido;
+                    aux.Tipo = obj.tipo;
+                    db.detalle_encuesta.Add(aux);
+                    db.SaveChanges();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult getDetalle(int id)
+        {
+            try 
+            {
+                using (Models.encuestaEntities db = new Models.encuestaEntities())
+                {
+                    var det = (from d in db.detalle_encuesta
+                               where d.idencuesta == id
+                               select new Models.Dinamico.detalle
+                               {
+                                   id = d.iddetalle_encuesta,
+                                   nombre = d.Nombre,
+                                   titulo = d.Titulo,
+                                   requerido = (bool)d.Requerido,
+                                   tipo = (int)d.Tipo
+                               }).ToList();
+                    return Json(det, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch 
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
     }

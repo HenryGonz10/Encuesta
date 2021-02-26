@@ -7,7 +7,7 @@
 
 @using (Html.BeginForm("Create", "Encuesta", FormMethod.Post))
 {
-    <div class="card shadow-lg">
+    <div class="card shadow-lg"  onload="carga();">
         <div class="card-body">
             <h2 class="text-center">@ViewBag.Title</h2>
             <div class="form-group">
@@ -41,7 +41,7 @@
 
                 <div class="form-group">
                     Tipo
-                    <input type="text" id="tipo" class="form-control"/>
+                    @Html.DropDownList("tipo", new SelectList(""), new { @class = "form-control" })
                 </div>
                 <div>
                     <a class="btn btn-success float-right" onclick="AgregaConcepto();"><i class="fas fa-plus"></i>&nbsp;Agregar</a>
@@ -60,6 +60,9 @@
                             <th></th>
                         </tr>
                     </table>
+                    <div id="ocultos">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,11 +100,11 @@
         TDtitulo.innerHTML = rotulo;
         TDrequerido.innerHTML = requerido;
         TDtipo.innerHTML = tipo;
-        TDbtn.innerHTML = "<a class='" + "btn btn-danger" + "'onclick='" + "elimina("+ num +");" + "'><i class='" + "fas fa-trash" +"'></i>&nbsp;Eliminar</a>";
+        TDbtn.innerHTML = "<a class='" + "btn btn-danger borrar" + "'onclick='" + "elimina("+ num +");" + "'><i class='" + "fas fa-trash" +"'></i>&nbsp;Eliminar</a>";
         Tabla.appendChild(TR);
 
         //agregamos hiddens
-        let DivConceptos = document.getElementById("divConceptos");
+        let DivConceptos = document.getElementById("ocultos");
         let HiddenIndex = document.createElement("input");
         let Hiddennombre = document.createElement("input");
         let Hiddentitulo = document.createElement("input");
@@ -131,13 +134,39 @@
         document.getElementById("nombre").value = "";
         document.getElementById("rotulo").value = "";
         document.getElementById("requerido").checked = false;
-        document.getElementById("tipo").value = "";
 
         num++;
     }
 
     function elimina(id)
     {
-        
+        var element = document.getElementById('ocultos');
+        var elementos = element.getElementsByTagName("input");
+
+        for (var indice = 0; indice < elementos.length; indice++) {
+            var texto = elementos[indice].name;
+            var val = elementos[indice].value;
+
+            if (texto.includes("detalles.Index") && val == id) {
+                elementos[indice].parentElement.removeChild(elementos[indice]);
+            }
+
+            if (texto.includes("detalles[" + id + "]")) {
+                elementos[indice].parentElement.removeChild(elementos[indice]);
+            }
+        }
     }
+
+    function carga() {
+        $.get("/Encuesta/Gettipo", function (data) {
+            $("#tipo").empty();
+            $.each(data, function (index, row) {
+                $("#tipo").append("<option value='" + row.idTipo + "'>" + row.Tipo1 + "</option>")
+            });
+        });
+    };
+
+    window.onload = function () {
+        carga();
+    };
 </script>
